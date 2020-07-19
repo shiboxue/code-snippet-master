@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: service1
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.92.1:8848
+        namespace: e5fc372c-ad66-4e0e-a353-a217d0a315ba
+#      config:
+#        server-addr: 192.168.92.1:8848
+#        namespace: e5fc372c-ad66-4e0e-a353-a217d0a315ba
+#        group: service1
+#        file-extension: yml
+#        extension-configs:
+#          - data-id: greeting.yml
+#            group: common
+#            refresh: true
+#          - data-id: author.yml
+#            group: common
+#            refresh: true
+
+#    sentinel:
+#      transport:
+#        dashboard: localhost:8089
+
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+
+dubbo:
+  scan:
+    base-packages: com.karonda.service1.service.impl
+  protocol:
+    name: dubbo
+    port: -1 # -1 表示端口自增
+  registry:
+    address: nacos://192.168.92.1:8848
+  consumer:
+    check: false # 不加此配置项目启动时可能会失败
+
+server:
+  port: 8071

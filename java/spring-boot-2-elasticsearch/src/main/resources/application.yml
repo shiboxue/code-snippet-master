@@ -1,0 +1,11 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 192.168.14.1:9300
+
+  profiles:
+    active: ElasticsearchTemplate
+
+swagger:
+  enable: true
