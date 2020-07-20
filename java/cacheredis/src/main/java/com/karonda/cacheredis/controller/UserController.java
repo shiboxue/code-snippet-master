@@ -20,7 +20,6 @@ public class UserController {
 
     @Autowired
     RedisTemplate<String, String> redisTemplate;
-
 //    @Autowired
 //    StringRedisTemplate redisTemplate;
 

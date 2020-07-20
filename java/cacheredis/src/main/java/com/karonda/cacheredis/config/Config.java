@@ -16,9 +16,19 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * @name 本次config是解决redisTemplate 与Spring cache乱码问题
+ * @time 2020-07-20
+ * @author shiboxue
+ */
 @Configuration
 public class Config  extends CachingConfigurerSupport {
 
+    /**
+     * @name 序列化redisTemplate
+     * @param factory
+     * @return
+     */
     @Bean(name="redisTemplate")
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, String> template = new RedisTemplate<>();
@@ -39,22 +49,25 @@ public class Config  extends CachingConfigurerSupport {
         return template;
     }
 
+    /**
+     * @name 重新配置cacheManager
+     * @param factory
+     * @return
+     */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-
         // 配置序列化
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
         RedisCacheConfiguration redisCacheConfiguration = config
                 .serializeKeysWith(RedisSerializationContext
                 .SerializationPair.fromSerializer(redisSerializer))
-                .serializeValuesWith(
-                        RedisSerializationContext
-                                .SerializationPair
-                                .fromSerializer(jackson2JsonRedisSerializer));
-
-        RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
+                .serializeValuesWith(RedisSerializationContext
+                .SerializationPair
+                .fromSerializer(jackson2JsonRedisSerializer));
+        RedisCacheManager cacheManager = RedisCacheManager
+                .builder(factory)
                 .cacheDefaults(redisCacheConfiguration)
                 .build();
         return cacheManager;
