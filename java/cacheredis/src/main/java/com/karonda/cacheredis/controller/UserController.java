@@ -22,7 +22,6 @@ public class UserController {
     RedisTemplate<String, String> redisTemplate;
 //    @Autowired
 //    StringRedisTemplate redisTemplate;
-
     @GetMapping("/{id}")
     public Map<String, Object> get(@PathVariable int id){
         Map<String, Object> stringObjectMap = userService.get(id);
